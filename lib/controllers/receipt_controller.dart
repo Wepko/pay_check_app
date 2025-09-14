@@ -6,11 +6,16 @@ class ReceiptController extends GetxController {
   final ReceiptRepository _repository = ReceiptRepository();
   final receipts = <Receipt>[].obs;
   final isLoading = true.obs;
+  final currentIndex = 0.obs; // Добавляем управление индексом навигации
 
   @override
   void onInit() {
     super.onInit();
     loadReceipts();
+  }
+
+  void changePage(int index) {
+    currentIndex.value = index;
   }
 
   Future<void> loadReceipts() async {
@@ -43,5 +48,18 @@ class ReceiptController extends GetxController {
     } catch (e) {
       Get.snackbar('Ошибка', 'Не удалось удалить чек');
     }
+  }
+
+  // Метод для статистики (используется на SecondPage)
+  double get totalAmount {
+    return receipts.fold(0, (sum, receipt) => sum + receipt.amount);
+  }
+
+  int get receiptsCount {
+    return receipts.length;
+  }
+
+  double get averageAmount {
+    return receiptsCount > 0 ? totalAmount / receiptsCount : 0;
   }
 }
