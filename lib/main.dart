@@ -4,6 +4,7 @@ import 'package:pay_check_app/controllers/receipt_controller.dart';
 import 'package:pay_check_app/presentation/pages/home_page.dart';
 import 'package:pay_check_app/presentation/pages/info_page.dart';
 import 'package:pay_check_app/presentation/pages/second_page.dart';
+import 'package:pay_check_app/routes/app_pages.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
+      getPages: AppPages.routes,
       home: MainNavigationWrapper(),
     );
   }

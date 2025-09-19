@@ -18,6 +18,16 @@ class ReceiptController extends GetxController {
     currentIndex.value = index;
   }
 
+  Future<void> updateReceipt(Receipt receipt) async {
+    try {
+      await _repository.updateReceipt(receipt);
+      await loadReceipts();
+      Get.snackbar('Успех', 'Чек обновлен');
+    } catch (e) {
+      Get.snackbar('Ошибка', 'Не удалось обновить чек');
+    }
+  }
+
   Future<void> loadReceipts() async {
     try {
       isLoading.value = true;

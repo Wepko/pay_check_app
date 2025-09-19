@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/receipt_controller.dart';
 import '../../data/models/receipt_model.dart';
+import '../../utils/dialog_utils.dart';
 
 class HomePage extends StatelessWidget {
   final ReceiptController controller = Get.find<ReceiptController>();
@@ -41,8 +42,20 @@ class HomePage extends StatelessWidget {
                   '${receipt.amount} руб. • ${receipt.date.toString().substring(0, 10)}'),
               trailing: IconButton(
                 icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () => controller.deleteReceipt(receipt.id!),
+                onPressed: () => DialogUtils.showDeleteConfirmationDialog(
+                  title: 'Подтверждение удаления',
+                  message: 'Вы уверены, что хотите удалить этот чек?',
+                  onConfirm: () {
+                    if (receipt.id != null) {
+                      controller.deleteReceipt(receipt.id!);
+                    }
+                  },
+                ),
               ),
+              onTap: () {
+                // Навигация к деталям чека используя именованный маршрут
+                Get.toNamed('/receipt/${receipt.id}');
+              },
             );
           },
         );
