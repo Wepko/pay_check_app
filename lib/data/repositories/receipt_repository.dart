@@ -1,6 +1,6 @@
+import 'package:pay_check_app/data/models/receipt_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../models/receipt_model.dart';
 
 class ReceiptRepository {
   static Database? _database;

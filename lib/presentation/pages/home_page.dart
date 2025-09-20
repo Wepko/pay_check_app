@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/receipt_controller.dart';
-import '../../data/models/receipt_model.dart';
-import '../../utils/dialog_utils.dart';
+import 'package:pay_check_app/controllers/receipt_controller.dart';
+import 'package:pay_check_app/data/models/receipt_model.dart';
+import 'package:pay_check_app/presentation/widgets/dialog_widget.dart';
 
 class HomePage extends StatelessWidget {
   final ReceiptController controller = Get.find<ReceiptController>();
@@ -36,27 +36,7 @@ class HomePage extends StatelessWidget {
           itemCount: controller.receipts.length,
           itemBuilder: (context, index) {
             final receipt = controller.receipts[index];
-            return ListTile(
-              title: Text(receipt.title),
-              subtitle: Text(
-                  '${receipt.amount} руб. • ${receipt.date.toString().substring(0, 10)}'),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () => DialogUtils.showDeleteConfirmationDialog(
-                  title: 'Подтверждение удаления',
-                  message: 'Вы уверены, что хотите удалить этот чек?',
-                  onConfirm: () {
-                    if (receipt.id != null) {
-                      controller.deleteReceipt(receipt.id!);
-                    }
-                  },
-                ),
-              ),
-              onTap: () {
-                // Навигация к деталям чека используя именованный маршрут
-                Get.toNamed('/receipt/${receipt.id}');
-              },
-            );
+            return ItemReceiptOldWidget(receipt: receipt);
           },
         );
       }),
@@ -109,6 +89,46 @@ class HomePage extends StatelessWidget {
             ),
           ],
         );
+      },
+    );
+  }
+}
+
+class ItemReceiptOldWidget extends StatelessWidget {
+  const ItemReceiptOldWidget({
+    super.key,
+    required this.receipt,
+    this.onDelete,
+    this.onTap,
+  });
+
+  final Receipt receipt;
+  final VoidCallback? onDelete;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ReceiptController controller = Get.find<ReceiptController>();
+
+    return ListTile(
+      title: Text(receipt.title),
+      subtitle: Text(
+          '${receipt.amount} руб. • ${receipt.date.toString().substring(0, 10)}'),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete, color: Colors.red),
+        onPressed: () => DialogWidget.showDeleteConfirmationDialog(
+          title: 'Подтверждение удаления',
+          message: 'Вы уверены, что хотите удалить этот чек?',
+          onConfirm: onDelete ?? () {
+            if (receipt.id != null) {
+              controller.deleteReceipt(receipt.id!);
+            }
+          },
+        ),
+      ),
+      onTap: onTap ?? () {
+        // Навигация к деталям чека используя именованный маршрут
+        Get.toNamed('/receipt/${receipt.id}');
       },
     );
   }

@@ -1,8 +1,8 @@
-// utils/dialog_utils.dart
+// utils/dialog_widget.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DialogUtils {
+class DialogWidget {
   static void showDeleteConfirmationDialog({
     required String title,
     required String message,

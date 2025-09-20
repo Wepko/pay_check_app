@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../data/models/receipt_model.dart';
-import '../data/repositories/receipt_repository.dart';
+import 'package:pay_check_app/data/models/receipt_model.dart';
+import 'package:pay_check_app/data/repositories/receipt_repository.dart';
 
 class ReceiptController extends GetxController {
   final ReceiptRepository _repository = ReceiptRepository();

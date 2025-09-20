@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/receipt_controller.dart';
+import 'package:pay_check_app/controllers/receipt_controller.dart';
+import 'package:pay_check_app/presentation/widgets/item_receipt_widget.dart';
 
 class SecondPage extends StatelessWidget {
   final ReceiptController controller = Get.find<ReceiptController>();
@@ -54,34 +55,18 @@ class SecondPage extends StatelessWidget {
               Expanded(
                 child: controller.receipts.isEmpty
                     ? const Center(
-                  child: Text(
-                    'Нет данных для отображения',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
+                        child: Text(
+                          'Нет данных для отображения',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )
                     : ListView.builder(
-                  itemCount: controller.receipts.length,
-                  itemBuilder: (context, index) {
-                    final receipt = controller.receipts[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        leading: const Icon(Icons.receipt, color: Colors.blue),
-                        title: Text(receipt.title),
-                        subtitle: Text(
-                          '${receipt.amount.toStringAsFixed(2)} руб. • ${receipt.date.toString().substring(0, 10)}',
-                        ),
-                        trailing: Text(
-                          '${receipt.amount.toStringAsFixed(2)} руб.',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
+                        itemCount: controller.receipts.length,
+                        itemBuilder: (context, index) {
+                          final receipt = controller.receipts[index];
+                          return ItemReceiptWidget(receipt: receipt);
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -109,10 +94,7 @@ class SecondPage extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
                   value,

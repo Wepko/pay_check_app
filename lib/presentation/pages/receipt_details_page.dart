@@ -1,8 +1,7 @@
-// presentation/pages/receipt_detail_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/receipt_controller.dart';
-import '../../data/models/receipt_model.dart';
+import 'package:pay_check_app/controllers/receipt_controller.dart';
+import 'package:pay_check_app/data/models/receipt_model.dart';
 
 class ReceiptDetailPage extends StatefulWidget {
   const ReceiptDetailPage({super.key});
