@@ -33,7 +33,8 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     if (receiptId != null) {
       receipt = controller.receipts.firstWhere(
         (r) => r.id.toString() == receiptId,
-        orElse: () => Receipt(organizationName: '', totalAmount: 0, date: DateTime.now()),
+        orElse: () =>
+            Receipt(organizationName: '', totalAmount: 0, date: DateTime.now()),
       );
     }
 
@@ -49,7 +50,9 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     );
 
     _titleController = TextEditingController(text: receipt.organizationName);
-    _amountController = TextEditingController(text: receipt.totalAmount.toString());
+    _amountController = TextEditingController(
+      text: receipt.totalAmount.toString(),
+    );
     _selectedDate = receipt.date;
   }
 
@@ -162,7 +165,9 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _isEditing ? 'Редактирование чека' : 'Чек: ${receipt.organizationName}',
+          _isEditing
+              ? 'Редактирование чека2'
+              : 'Чек: ${receipt.organizationName}',
         ),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -175,6 +180,11 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
             IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () => setState(() => _isEditing = true),
+            ),
+          if (_isEditing)
+            IconButton(
+              icon: const Icon(Icons.menu_book),
+              onPressed: () => setState(() => _isEditing = false),
             ),
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -250,13 +260,6 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          _buildStatCard(
-            icon: Icons.info,
-            title: 'ID чека',
-            value: _editableReceipt.id.toString(),
-            color: Colors.grey,
-          ),
         ],
       ),
     );
@@ -266,16 +269,19 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildDetailItem('Название', receipt.organizationName),
-        _buildDetailItem('Сумма', '${receipt.totalAmount.toStringAsFixed(2)} руб.'),
-        _buildDetailItem('Дата', _formatDate(receipt.date)),
-        _buildDetailItem('ID', receipt.id.toString()),
+        // _buildDetailItem('Название', receipt.organizationName),
+        // _buildDetailItem(
+        //   'Сумма',
+        //   '${receipt.totalAmount.toStringAsFixed(2)} руб.',
+        // ),
+        // _buildDetailItem('Дата', _formatDate(receipt.date)),
+        // _buildDetailItem('ID', receipt.id.toString()),
         const SizedBox(height: 20),
         _buildStatCard(
-          icon: Icons.calendar_today,
+          icon: Icons.qr_code_2,
           title: 'Дата создания',
           value: _formatDateTime(receipt.date),
-          color: Colors.purple,
+          color: Colors.black,
         ),
       ],
     );
@@ -315,27 +321,59 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
       elevation: 3,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
           children: [
-            Icon(icon, size: 32, color: color),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+            Text(
+              "ООО Пекарня",
+              style: const TextStyle(
+                fontSize: 24,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            Text(
+              "Адрес: Самара. Советская Армии 148а",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "КАССОВЫЙ ЧЕК",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            Row(
+              children: [
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        value,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(icon, size: 114, color: color),
+              ],
             ),
           ],
         ),
