@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_check_app/controllers/receipt_controller.dart';
-import 'package:pay_check_app/presentation/pages/home_page.dart';
+import 'package:pay_check_app/presentation/pages/receipt_list_page.dart';
 import 'package:pay_check_app/presentation/pages/info_page.dart';
 import 'package:pay_check_app/presentation/pages/second_page.dart';
 import 'package:pay_check_app/routes/app_pages.dart';
@@ -40,7 +40,7 @@ class MainNavigationWrapper extends StatelessWidget {
       body: Obx(() => IndexedStack(
         index: controller.currentIndex.value,
         children:  [
-          HomePage(),
+          ReceiptListPage(),
           SecondPage(),
           InfoPage(),
         ],
@@ -59,10 +59,10 @@ class MainNavigationWrapper extends StatelessWidget {
             icon: Icon(Icons.analytics),
             label: 'Статистика',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.info),
-            label: 'О приложение',
-          ),
+          // NavigationDestination(
+          //   icon: Icon(Icons.info),
+          //   label: 'О приложение',
+          // ),
         ],
       )),
     );

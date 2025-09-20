@@ -32,8 +32,8 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
 
     if (receiptId != null) {
       receipt = controller.receipts.firstWhere(
-            (r) => r.id.toString() == receiptId,
-        orElse: () => Receipt(title: '', amount: 0, date: DateTime.now()),
+        (r) => r.id.toString() == receiptId,
+        orElse: () => Receipt(organizationName: '', totalAmount: 0, date: DateTime.now()),
       );
     }
 
@@ -43,13 +43,13 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
 
     _editableReceipt = Receipt(
       id: receipt.id,
-      title: receipt.title,
-      amount: receipt.amount,
+      organizationName: receipt.organizationName,
+      totalAmount: receipt.totalAmount,
       date: receipt.date,
     );
 
-    _titleController = TextEditingController(text: receipt.title);
-    _amountController = TextEditingController(text: receipt.amount.toString());
+    _titleController = TextEditingController(text: receipt.organizationName);
+    _amountController = TextEditingController(text: receipt.totalAmount.toString());
     _selectedDate = receipt.date;
   }
 
@@ -78,8 +78,8 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     if (_formKey.currentState!.validate()) {
       final updatedReceipt = Receipt(
         id: _editableReceipt.id,
-        title: _titleController.text,
-        amount: double.parse(_amountController.text),
+        organizationName: _titleController.text,
+        totalAmount: double.parse(_amountController.text),
         date: _selectedDate,
       );
 
@@ -97,14 +97,16 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     }
   }
 
-// Добавьте новый метод для показа диалога:
+  // Добавьте новый метод для показа диалога:
   void _showDeleteConfirmationDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Подтверждение удаления'),
-          content: const Text('Вы уверены, что хотите удалить этот чек? Это действие нельзя отменить.'),
+          content: const Text(
+            'Вы уверены, что хотите удалить этот чек? Это действие нельзя отменить.',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), // Закрыть диалог
@@ -115,10 +117,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
                 Navigator.of(context).pop(); // Закрыть диалог
                 _performDelete(); // Выполнить удаление
               },
-              child: const Text(
-                'Удалить',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: const Text('Удалить', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -126,7 +125,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     );
   }
 
-// Метод для выполнения удаления
+  // Метод для выполнения удаления
   void _performDelete() {
     if (_editableReceipt.id != null) {
       controller.deleteReceipt(_editableReceipt.id!);
@@ -141,8 +140,9 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
 
     if (receiptId != null) {
       receipt = controller.receipts.firstWhere(
-            (r) => r.id.toString() == receiptId,
-        orElse: () => Receipt(title: '', amount: 0, date: DateTime.now()),
+        (r) => r.id.toString() == receiptId,
+        orElse: () =>
+            Receipt(organizationName: '', totalAmount: 0, date: DateTime.now()),
       );
     }
 
@@ -161,7 +161,9 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Редактирование чека' : 'Чек: ${receipt.title}'),
+        title: Text(
+          _isEditing ? 'Редактирование чека' : 'Чек: ${receipt.organizationName}',
+        ),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         leading: IconButton(
@@ -186,9 +188,9 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
       ),
       floatingActionButton: _isEditing
           ? FloatingActionButton(
-        onPressed: _saveChanges,
-        child: const Icon(Icons.save),
-      )
+              onPressed: _saveChanges,
+              child: const Icon(Icons.save),
+            )
           : null,
     );
   }
@@ -264,8 +266,8 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildDetailItem('Название', receipt.title),
-        _buildDetailItem('Сумма', '${receipt.amount.toStringAsFixed(2)} руб.'),
+        _buildDetailItem('Название', receipt.organizationName),
+        _buildDetailItem('Сумма', '${receipt.totalAmount.toStringAsFixed(2)} руб.'),
         _buildDetailItem('Дата', _formatDate(receipt.date)),
         _buildDetailItem('ID', receipt.id.toString()),
         const SizedBox(height: 20),
@@ -295,10 +297,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
           ),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
           const Divider(),
         ],
@@ -326,10 +325,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   Text(
                     value,

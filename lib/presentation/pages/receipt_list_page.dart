@@ -4,10 +4,10 @@ import 'package:pay_check_app/controllers/receipt_controller.dart';
 import 'package:pay_check_app/data/models/receipt_model.dart';
 import 'package:pay_check_app/presentation/widgets/dialog_widget.dart';
 
-class HomePage extends StatelessWidget {
+class ReceiptListPage extends StatelessWidget {
   final ReceiptController controller = Get.find<ReceiptController>();
 
-  HomePage({super.key});
+  ReceiptListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +77,9 @@ class HomePage extends StatelessWidget {
                 final amount = double.tryParse(amountController.text) ?? 0;
 
                 if (title.isNotEmpty && amount > 0) {
-                  controller.addReceipt(Receipt(
-                    title: title,
-                    amount: amount,
-                    date: DateTime.now(),
-                  ));
+                  controller.addReceipt(
+                    Receipt(organizationName: title, totalAmount: amount, date: DateTime.now()),
+                  );
                   Get.back();
                 }
               },
@@ -94,6 +92,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
+//Todo: Вынести в widget будет монокомпонент
 class ItemReceiptOldWidget extends StatelessWidget {
   const ItemReceiptOldWidget({
     super.key,
@@ -111,25 +110,41 @@ class ItemReceiptOldWidget extends StatelessWidget {
     final ReceiptController controller = Get.find<ReceiptController>();
 
     return ListTile(
-      title: Text(receipt.title),
-      subtitle: Text(
-          '${receipt.amount} руб. • ${receipt.date.toString().substring(0, 10)}'),
+      leading: const Icon(Icons.receipt, color: Colors.blue),
+      title: Text(receipt.organizationName),
+      subtitle: Row(
+        children: [
+          Text(
+            '${receipt.totalAmount} руб.',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.green[400],
+            ),
+          ),
+          Text(' • '),
+          Text('${receipt.date.toString().substring(0, 10)}.'),
+        ],
+      ),
       trailing: IconButton(
         icon: const Icon(Icons.delete, color: Colors.red),
         onPressed: () => DialogWidget.showDeleteConfirmationDialog(
           title: 'Подтверждение удаления',
           message: 'Вы уверены, что хотите удалить этот чек?',
-          onConfirm: onDelete ?? () {
-            if (receipt.id != null) {
-              controller.deleteReceipt(receipt.id!);
-            }
-          },
+          onConfirm:
+              onDelete ??
+              () {
+                if (receipt.id != null) {
+                  controller.deleteReceipt(receipt.id!);
+                }
+              },
         ),
       ),
-      onTap: onTap ?? () {
-        // Навигация к деталям чека используя именованный маршрут
-        Get.toNamed('/receipt/${receipt.id}');
-      },
+      onTap:
+          onTap ??
+          () {
+            // Навигация к деталям чека используя именованный маршрут
+            Get.toNamed('/receipt/${receipt.id}');
+          },
     );
   }
 }

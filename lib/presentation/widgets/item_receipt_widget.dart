@@ -23,15 +23,14 @@ class ItemReceiptWidget extends StatelessWidget {
           Icons.receipt,
           color: Colors.blue,
         ),
-        title: Text(receipt.title),
-        subtitle: Text(
-          '${receipt.amount.toStringAsFixed(2)} руб. • ${receipt.date.toString().substring(0, 10)}',
+        title: Text(receipt.organizationName),
+        subtitle: Text('${receipt.totalAmount.toStringAsFixed(2)} руб. • ${receipt.date.toString().substring(0, 10)}',
         ),
         trailing: Text(
-          '${receipt.amount.toStringAsFixed(2)} руб.',
-          style: const TextStyle(
+          '${receipt.totalAmount.toStringAsFixed(2)} руб.',
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.green,
+            color: Colors.green[400],
           ),
         ),
       ),

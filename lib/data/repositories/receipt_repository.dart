@@ -24,9 +24,21 @@ class ReceiptRepository {
     await db.execute('''
       CREATE TABLE receipts(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        amount REAL NOT NULL,
-        date INTEGER NOT NULL
+        organization_name TEXT NOT NULL,
+        organization_address TEXT,
+        receipt_number TEXT,
+        date INTEGER NOT NULL,
+        items TEXT,
+        total_amount REAL NOT NULL,
+        is_taxable INTEGER,
+        cashier_name TEXT,
+        payment_type INTEGER,
+        legal_entity_name TEXT,
+        fiscal_number TEXT,
+        fiscal_document TEXT,
+        fiscal_sign TEXT,
+        kkt_registration_number TEXT,
+        kkt_factory_number TEXT
       )
     ''');
   }
@@ -61,5 +73,18 @@ class ReceiptRepository {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<Receipt?> getReceiptById(int id) async {
+    final db = await database;
+    final maps = await db.query(
+      'receipts',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.isNotEmpty) {
+      return Receipt.fromMap(maps.first);
+    }
+    return null;
   }
 }

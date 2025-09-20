@@ -62,7 +62,7 @@ class ReceiptController extends GetxController {
 
   // Метод для статистики (используется на SecondPage)
   double get totalAmount {
-    return receipts.fold(0, (sum, receipt) => sum + receipt.amount);
+    return receipts.fold(0, (sum, receipt) => sum + receipt.totalAmount);
   }
 
   int get receiptsCount {
